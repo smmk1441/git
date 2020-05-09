@@ -13,3 +13,5 @@ func doCamera() {
         self.present(cameraPicker,animated: true,completion: nil)
     }
 }
+
+あああ
