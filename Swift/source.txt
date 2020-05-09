@@ -1,10 +1,9 @@
-
 //カメラ立ち上げメソッド
 func doCamera() {
     let sourceType:UIImagePickerController.SourceType = .camera
 
     //カメラ利用可能かチェック
-    if UIImagePickerController.isSourceTypeAvailable(.camara) {
+    if UIImagePickerController.isSourceTypeAvailable(.camera) {
         let cameraPicker = UIImagePickerController()
         cameraPicker.allowsEditing = true
         cameraPicker.sourceType = sourceType
@@ -13,5 +12,3 @@ func doCamera() {
         self.present(cameraPicker,animated: true,completion: nil)
     }
 }
-
-あああ
