@@ -1,0 +1,9 @@
+/* 画面上部のナビゲーションを消す */
+override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+
+    navigationController?.setNavigationBarHidden(true, animated: true)
+}
+
+/* 戻る */
+self.navigationController?.popViewController(animated: true)

@@ -1,0 +1,18 @@
+import Foundation
+
+class Contents {
+
+    var userNameString:String = ""
+    var profileImageString:String = ""
+    var contentImageString:String = ""
+    var commentString:String = ""
+    var postDataString:String = ""
+
+    init(userNameString:String, profileImageString:String, contentImageString:String, commentString:String, postDataString:String) {
+        self.userNameString = userNameString
+        self.profileImageString = profileImageString
+        self.contentImageString = contentImageString
+        self.commentString = commentString
+        self.postDataString = postDataString
+    }
+}

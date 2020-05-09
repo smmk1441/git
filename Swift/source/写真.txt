@@ -1,0 +1,43 @@
+//デリゲート設定
+UIImagePickerControllerDelegate, UINavigationControllerDelegate
+
+
+// カメラ立ち上げメソッド
+func doCamera() {
+    let sourceType:UIImagePickerController.SourceType = .camera
+
+    // カメラ利用可能かチェック
+    if UIImagePickerController.isSourceTypeAvailable(.camera) {
+        let cameraPicker = UIImagePickerController()
+        cameraPicker.allowsEditing = true
+        cameraPicker.sourceType = sourceType
+        cameraPicker.delegate = self
+
+        self.present(cameraPicker,animated: true,completion: nil)
+    }
+}
+
+
+// アルバム立ち上げメソッド
+func doAlbum() {
+    let sourceType:UIImagePickerController.SourceType = .camera
+
+    // アルバム利用可能かチェック
+    if UIImagePickerController.isSourceTypeAvailable(.camera) {
+        let cameraPicker = UIImagePickerController()
+        cameraPicker.allowsEditing = true
+        cameraPicker.sourceType = sourceType
+        cameraPicker.delegate = self
+
+        self.present(cameraPicker,animated: true,completion: nil)
+    }
+}
+
+
+// カメラ、アルバムから取得した画像を取得
+func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+
+    if info[.originalImage] as? UIImage != nil {
+        let selectedImage = info[.originalImage] as! UIImage
+    }
+}

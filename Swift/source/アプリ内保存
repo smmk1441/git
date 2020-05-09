@@ -1,0 +1,16 @@
+// 保存
+UserDefaults.standard.set(userNameTextField, forKey: "userName")
+
+let data = logoImageView.image?.jpegData(compressionQuality: 0.1)
+UserDefaults.standard.set(data, forKey: "userImage")
+
+
+// 取得
+if UserDefaults.standard.object(forKey: "userName") != nil {
+    userName = UserDefaults.standard.object(forKey: "userName") as! String
+}
+
+if UserDefaults.standard.object(forKey: "userImage") != nil {
+    userImageData = UserDefaults.standard.object(forKey: "userImage") as! Data
+    userImage = UIImage(data:userImageData)!
+}

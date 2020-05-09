@@ -1,0 +1,5 @@
+/* 画面が表示されるたびに呼ばれる */
+override func viewWillAppear(_ animated: Bool) {
+    super .viewWillAppear(animated)
+    fetchContentsData()
+}

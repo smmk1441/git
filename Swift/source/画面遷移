@@ -1,0 +1,29 @@
+1．ナビゲーションを用いて画面遷移
+
+前提：storyboardの  IdentityのstoryboardIDを設定してuse storyboardIDにチェックを入れておく
+
+// 遷移先のコントローラーを取得
+let editPostVC = self.storyboard?.instantiateViewController(identifier: "editPost") as! 遷移先コントローラー
+
+// パラメータ設定（遷移先コントローラーにプロパティを準備しておく）
+editPostVC.passedImage = selectedImage
+
+// 遷移
+self.navigationController?.pushViewController(editPostVC, animated: true)
+
+
+２．segueを用いて画面遷移
+
+前提：ストリートボードで画面をモーダルでつなげておき、segueのIDを指定しておく
+
+performSegue(withIdentifier: "detail", sender: <#T##Any?#>)
+
+/* 画面遷移時のパラメータ設定 */
+override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+    let detailVC = segue.destination as! DetailViewController
+    detailVC.userName = userName
+    detailVC.comment = commentString
+    detailVC.date = createData
+    detailVC.profileImage = userProfileImageString
+    detailVC.contentImage = contentImageString
+}

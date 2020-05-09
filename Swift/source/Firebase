@@ -1,0 +1,155 @@
+/* Firebase に情報を登録する */
+@IBAction func postAction(_ sender: Any) {
+
+    // 子階層作成
+    let timeLineDB = Database.database().reference().child("timeLine").childByAutoId()
+
+    // 登録する情報のキーを準備
+    let key = timeLineDB.child("Users").childByAutoId().key
+    let key2 = timeLineDB.child("Contents").childByAutoId().key
+
+    // ストレージに送信する際のキーの準備（Users、Contents）
+    let storage = Storage.storage().reference(forURL: "")
+
+    let imageRef = storage.child("Users").child("\(String(describing:key!)).jpg")
+    let imageRef2 = storage.child("Contents").child("\(String(describing:key2!)).jpg")
+
+    // 画像圧縮
+    var userProfileImageData:Data = Data()
+    var contentImageData:Data = Data()
+
+    if userProfileImageView.image != nil {
+        userProfileImageData = (userProfileImageView.image?.jpegData(compressionQuality: 0.01))!
+    }
+    if contentImageView.image != nil {
+        contentImageData = (contentImageView.image?.jpegData(compressionQuality: 0.01))!
+    }
+
+    // アップロード処理
+    let uploadTask = imageRef.putData(userProfileImageData, metadata: nil) {
+        (metaData,error) in
+
+        // １つ目のアップロードが完了
+        if error != nil {
+            print(error)
+            return
+        }
+
+        let uploadTask2 = imageRef2.putData(contentImageData, metadata: nil) {
+            (metaData,error) in
+
+            // ２つ目のアップロードが完了
+            if error != nil {
+                print(error)
+                return
+            }
+
+            // １つ目の画像がPUTできた先のURLを返してもらう
+            imageRef.downloadURL {
+                (url,error) in
+
+                if error != nil {
+                    print(error)
+                    return
+                }
+
+                if url != nil {
+                    // ２つ目の画像がPUTできた先のURLを返してもらう
+                    imageRef2.downloadURL {
+                        (url2, error) in
+
+                        if error != nil {
+                            print(error)
+                            return
+                        }
+
+                        if url2 != nil {
+                            // キーバリュー型で送信する情報を準備する
+                            let timeLineInfo = [
+                                "userName"        : self.userName           as Any,
+                                "userProfileImage": url?.absoluteString     as Any,
+                                "contents":         url2?.absoluteString    as Any,
+                                "comment":          self.commentTextField   as Any,
+                                "postDate":         ServerValue.timestamp()
+                            ] as [String:Any]
+
+                            // DBに登録
+                            timeLineDB.updateChildValues(timeLineInfo)
+
+                            // 戻る
+                            self.navigationController?.popViewController(animated: true)
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    uploadTask.resume()
+    self.dismiss(animated: true, completion: nil)
+
+}
+
+
+
+
+
+
+/* Firebase に登録されている情報を取得する　*/
+func fetchContentsData() {
+
+    // 最新の１００件を取得する（postDateに登録時間を入れている）
+    let ref = Database.database().reference().child("timeLine").queryLimited(toLast: 100).queryOrdered(byChild: "postDate").observe(.value) {
+        (snapShot) in
+
+        // 値が取得できたら、テーブルの配列初期化
+        self.contentsArray.removeAll()
+
+        // 取得した全レコードを変数に格納
+        if let snapShot = snapShot.children.allObjects as? [DataSnapshot] {
+
+            // 取得した件数分、ループ
+            for snap in snapShot {
+
+                // キー：バリューの形にして
+                if let postData = snap.value as? [String:Any] {
+
+                    // 各変数に格納
+                    let userName         = postData["userName"]         as? String
+                    let userProfileImage = postData["userProfileImage"] as? String
+                    let contents         = postData["contents"]         as? String
+                    let comment          = postData["comment"]          as? String
+                    var postDate:CLong?
+                    if let postedDate = postData["postDate"] as? CLong {
+                        postDate = postedDate
+                    }
+
+                    // 時間に変換
+                    let timeString = self.convertTimeStamp(serverTimeStamp: postDate!)
+
+                    // テーブルのコンテンツに追加
+                    self.contentsArray.append(
+                        Contents(
+                            userNameString: userName!,
+                            profileImageString: userProfileImage!,
+                            contentImageString: contents!,
+                            commentString: comment!,
+                            postDataString: timeString
+                        )
+                    )
+                }
+            }
+
+            // テーブル再構築
+            self.timeLineTableView.reloadData()
+
+            // 位置を一番下に移動する
+            // 一番下の位置情報を取得
+            let indexPath = IndexPath(row: self.contentsArray.count - 1, section:0)
+            if self.contentsArray.count >= 5 {
+                // 移動
+                self.timeLineTableView.scrollToRow(at: indexPath, at: .bottom, animated: true)
+            }
+        }
+    }
+}

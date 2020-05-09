@@ -1,0 +1,15 @@
+/* CLongのタイムスタンプを引数に時間に変換する */
+func convertTimeStamp(serverTimeStamp:CLong) -> String {
+
+    // 引数変換
+    let x = serverTimeStamp / 1000
+    let date = Date(timeIntervalSince1970: TimeInterval(x))
+
+    // フォーマット準備
+    let formatter = DateFormatter()
+    formatter.dateStyle = .long
+    formatter.timeStyle = .medium
+
+    // 変換して返却
+    return formatter.string(from: date)
+}
