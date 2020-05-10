@@ -1,8 +1,34 @@
 //デリゲート設定
 UIImagePickerControllerDelegate, UINavigationControllerDelegate
 
+/* カメラ使用許可チェック */
+info.plistに以下を追加
+Privacy - Camera Usage Description
+Privacy - Photo Library Usage Description
 
-// カメラ立ち上げメソッド
+import Photos
+PHPhotoLibrary.requestAuthorization {
+    (status) in
+
+    switch(status) {
+
+    case .authorized:
+        print("許可されている")
+
+    case .denied:
+        print("拒否")
+
+    case .notDetermined:
+        print("notDetermined")
+
+    case .restricted:
+        print("restricted")
+
+    }
+}
+
+
+/* カメラ立ち上げメソッド */
 func doCamera() {
     let sourceType:UIImagePickerController.SourceType = .camera
 
@@ -18,7 +44,7 @@ func doCamera() {
 }
 
 
-// アルバム立ち上げメソッド
+/* アルバム立ち上げメソッド */
 func doAlbum() {
     let sourceType:UIImagePickerController.SourceType = .camera
 
@@ -34,7 +60,7 @@ func doAlbum() {
 }
 
 
-// カメラ、アルバムから取得した画像を取得
+/* カメラ、アルバムから取得した画像を取得 */
 func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
 
     if info[.originalImage] as? UIImage != nil {

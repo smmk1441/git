@@ -27,3 +27,14 @@ override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
     detailVC.profileImage = userProfileImageString
     detailVC.contentImage = contentImageString
 }
+
+3. activeViewでシェア
+/* シェア */
+@IBAction func shareAction(_ sender: Any) {
+
+    let items = [contentsImageView.image] as Any
+
+    let acView = UIActivityViewController(activityItems: [items], applicationActivities: nil)
+    present(acView, animated: true, completion: nil)
+
+}

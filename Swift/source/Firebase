@@ -1,4 +1,22 @@
+/* AppDelegateの初期設定 */
+import Firebase
+
+@UIApplicationMain
+class AppDelegate: UIResponder, UIApplicationDelegate {
+
+
+
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+
+        FirebaseApp.configure()
+        return true
+    }
+
+
 /* Firebase に情報を登録する */
+
+前提：forURLのURLはFirebaseのプロジェクト→Storage→URLコピーから取得
+
 @IBAction func postAction(_ sender: Any) {
 
     // 子階層作成
@@ -9,7 +27,7 @@
     let key2 = timeLineDB.child("Contents").childByAutoId().key
 
     // ストレージに送信する際のキーの準備（Users、Contents）
-    let storage = Storage.storage().reference(forURL: "")
+    let storage = Storage.storage().reference(forURL: "gs://swift5firebaseanonymousl-55f4b.appspot.com")
 
     let imageRef = storage.child("Users").child("\(String(describing:key!)).jpg")
     let imageRef2 = storage.child("Contents").child("\(String(describing:key2!)).jpg")
