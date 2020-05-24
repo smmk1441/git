@@ -13,3 +13,33 @@ func convertTimeStamp(serverTimeStamp:CLong) -> String {
     // 変換して返却
     return formatter.string(from: date)
 }
+
+
+/* 動画の無限ループ再生 */
+override func viewDidLoad() {
+    super.viewDidLoad()
+
+    let path = Bundle.main.path(forResource: "start", ofType: "mov")
+    player = AVPlayer(url: URL(fileURLWithPath: path!))
+
+    // AVPlayer用のレイヤー（layer）を生成
+    let playerLayer = AVPlayerLayer(player: player)
+    playerLayer.frame = CGRect(x: 0, y: 0, width: view.frame.size.width, height: view.frame.size.height)
+
+    playerLayer.videoGravity = .resizeAspectFill
+    playerLayer.repeatCount = 0 //無限ループ
+    playerLayer.zPosition = -1
+    view.layer.insertSublayer(playerLayer, at: 0)
+
+    NotificationCenter.default.addObserver(forName: .AVPlayerItemDidPlayToEndTime, object: player.currentItem, queue: .main) { (_) in
+
+        self.player.seek(to: .zero)
+        self.player.play()
+    }
+    self.player.play()
+}
+
+@IBAction func login(_ sender: Any) {
+    // 止める
+    player.pause()
+}

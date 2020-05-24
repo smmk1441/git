@@ -1,0 +1,2 @@
+/* ページング */
+        scrollView.isPagingEnabled = true
