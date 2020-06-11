@@ -38,3 +38,6 @@ override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
     present(acView, animated: true, completion: nil)
 
 }
+
+4. 戻る
+self.dismiss(animated: true, completion: nil)

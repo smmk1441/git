@@ -1,2 +1,5 @@
 /* ページング */
         scrollView.isPagingEnabled = true
+
+
+simulated size freeform に変更
