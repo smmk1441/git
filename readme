@@ -1,0 +1,12 @@
+--インストール
+curl -L git.io/nodebrew | perl - setup
+export PATH=$HOME/.nodebrew/current/bin:$PATH
+nodebrew install-binary v12.18.3
+export PATH=$HOME/.nodebrew/node/v12.18.3/bin:$PATH
+npm install --save-dev json-server
+export PATH=$HOME/.//node_modules/.bin:$PATH
+
+--jsonサーバ起動
+json-server --watch db.json
+--画像登録用
+node server.js
